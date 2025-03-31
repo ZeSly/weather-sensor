@@ -35,15 +35,15 @@
 #include <Adafruit_BME280.h>
 
 /* Zigbee flow + pressure sensor configuration */
-#define FLOW_SENSOR_ENDPOINT_NUMBER 10
+#define TEMP_SENSOR_ENDPOINT_NUMBER 10
 #define PRESSURE_SENSOR_ENDPOINT_NUMBER 11
 
 #define uS_TO_S_FACTOR 1000000ULL /* Conversion factor for micro seconds to seconds */
-#define TIME_TO_SLEEP 15           /* Sleep for 55s will + 5s delay for establishing connection => data reported every 1 minute */
+#define TIME_TO_SLEEP  55         /* Sleep for 55s will + 5s delay for establishing connection => data reported every 1 minute */
 
 uint8_t button = BOOT_PIN;
 
-ZigbeeTempSensor zbTempSensor = ZigbeeTempSensor(FLOW_SENSOR_ENDPOINT_NUMBER);
+ZigbeeTempSensor zbTempSensor = ZigbeeTempSensor(TEMP_SENSOR_ENDPOINT_NUMBER);
 ZigbeePressureSensor zbPressureSensor = ZigbeePressureSensor(PRESSURE_SENSOR_ENDPOINT_NUMBER);
 
 Adafruit_BME280 bme;
@@ -51,7 +51,7 @@ Adafruit_BME280 bme;
 uint8_t getBatteryCapacity();
 
 void readSensors()
-{ // delaying for 100ms x 20 = 2s
+{
   float temperature_value = bme.readTemperature();
   float humidity_value = bme.readHumidity();
   float pressure_value = bme.readPressure() / 100.0;
@@ -97,46 +97,11 @@ void CheckButton()
   }
 }
 
-/*
-Method to print the reason by which ESP32
-has been awaken from sleep
-*/
-void print_wakeup_reason()
-{
-  esp_sleep_wakeup_cause_t wakeup_reason;
-
-  wakeup_reason = esp_sleep_get_wakeup_cause();
-
-  switch (wakeup_reason)
-  {
-  case ESP_SLEEP_WAKEUP_EXT0:
-    Serial.println("Wakeup caused by external signal using RTC_IO");
-    break;
-  case ESP_SLEEP_WAKEUP_EXT1:
-    Serial.println("Wakeup caused by external signal using RTC_CNTL");
-    break;
-  case ESP_SLEEP_WAKEUP_TIMER:
-    Serial.println("Wakeup caused by timer");
-    break;
-  case ESP_SLEEP_WAKEUP_TOUCHPAD:
-    Serial.println("Wakeup caused by touchpad");
-    break;
-  case ESP_SLEEP_WAKEUP_ULP:
-    Serial.println("Wakeup caused by ULP program");
-    break;
-  default:
-    Serial.printf("Wakeup was not caused by deep sleep: %d\n", wakeup_reason);
-    break;
-  }
-}
-
 void setup()
 {
   Serial.begin(115200);
-  delay(3000); //Take some time to open up the Serial Monitor
 
-  // Print the wakeup reason for ESP32
-  print_wakeup_reason();
+  pinMode(LED_BUILTIN, OUTPUT);
 
   // Init button switch
   pinMode(button, INPUT_PULLUP);
@@ -148,6 +113,8 @@ void setup()
   {
     Serial.println("BME280 not found !");
   }
+
+  digitalWrite(LED_BUILTIN, HIGH);
 
   // Configure the wake up source and set to wake up every 5 seconds
   esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
@@ -189,7 +156,7 @@ void setup()
   {
     Serial.println("Zigbee failed to start!");
     Serial.println("Rebooting...");
-    delay(1000);
+    digitalWrite(LED_BUILTIN, LOW);
     ESP.restart();
   }
   else
@@ -214,15 +181,8 @@ void setup()
 
   Serial.println("Going to sleep now");
   Serial.flush(); 
+  digitalWrite(LED_BUILTIN, LOW);
   esp_deep_sleep_start();
-
-  // Set reporting interval for flow and pressure measurement in seconds, must be called after Zigbee.begin()
-  // min_interval and max_interval in seconds, delta (pressure change in hPa, flow change in 0,1 m3/h)
-  // if min = 1 and max = 0, reporting is sent only when temperature changes by delta
-  // if min = 0 and max = 10, reporting is sent every 10 seconds or temperature changes by delta
-  // if min = 0, max = 10 and delta = 0, reporting is sent every 10 seconds regardless of delta change
-  // zbTempSensor.setReporting(0, 30, 1.0);
-  // zbPressureSensor.setReporting(0, 30, 1);
 }
 
 void loop()
