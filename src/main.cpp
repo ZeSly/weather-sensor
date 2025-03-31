@@ -114,6 +114,16 @@ void setup()
   // Init battery ADC
   pinMode(A0, INPUT);
 
+  // Activate RF switch control
+  pinMode(WIFI_ENABLE, OUTPUT); 
+  digitalWrite(WIFI_ENABLE, LOW);
+
+  delay(100);
+
+  // Use external antenna
+  pinMode(WIFI_ANT_CONFIG, OUTPUT);
+  digitalWrite(WIFI_ANT_CONFIG, HIGH);
+
   if (!bme.begin(0x76))
   {
     Serial.println("BME280 not found !");
