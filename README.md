@@ -7,4 +7,4 @@
 
 # Reference
  - [seed studio wiki](https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/)
- - Base on Espressif [Zigbee_Temp_Hum_Sensor_Sleepy](https://github.com/espressif/arduino-esp32/tree/master/libraries/Zigbee/examples/Zigbee_Temp_Hum_Sensor_Sleepy) example. Licensed under the Apache License, Version 2.0
+ - Based on Espressif [Zigbee_Temp_Hum_Sensor_Sleepy](https://github.com/espressif/arduino-esp32/tree/master/libraries/Zigbee/examples/Zigbee_Temp_Hum_Sensor_Sleepy) example. Licensed under the Apache License, Version 2.0
