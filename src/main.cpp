@@ -1,30 +1,35 @@
-// Copyright 2024 Espressif Systems (Shanghai) PTE LTD
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright Sylvain Girard 2025
 
-/**
- * @brief This example demonstrates Zigbee temperature sensor.
- *
- * The example demonstrates how to use Zigbee library to create a end device temperature sensor.
- * The temperature sensor is a Zigbee end device, which is controlled by a Zigbee coordinator.
- *
- * Proper Zigbee mode must be selected in Tools->Zigbee mode
- * and also the correct partition scheme must be selected in Tools->Partition Scheme.
- *
- * Please check the README.md for instructions and more detailed description.
- *
- * Created by Jan Procházka (https://github.com/P-R-O-C-H-Y/)
- */
+// [e-mail of the author(s)]
+
+// This software is a computer program whose purpose is to sedn temperature,
+// humidity and pressure measurment to a zigbee network.
+
+// This software is governed by the CeCILL-B license under French law and
+// abiding by the rules of distribution of free software.  You can  use, 
+// modify and/ or redistribute the software under the terms of the CeCILL-B
+// license as circulated by CEA, CNRS and INRIA at the following URL
+// "http://www.cecill.info". 
+
+// As a counterpart to the access to the source code and  rights to copy,
+// modify and redistribute granted by the license, users are provided only
+// with a limited warranty  and the software's author,  the holder of the
+// economic rights,  and the successive licensors  have only  limited
+// liability. 
+
+// In this respect, the user's attention is drawn to the risks associated
+// with loading,  using,  modifying and/or developing or reproducing the
+// software by the user in light of its specific status of free software,
+// that may mean  that it is complicated to manipulate,  and  that  also
+// therefore means  that it is reserved for developers  and  experienced
+// professionals having in-depth computer knowledge. Users are therefore
+// encouraged to load and test the software's suitability as regards their
+// requirements in conditions enabling the security of their systems and/or 
+// data to be ensured and,  more generally, to use and operate it in the 
+// same conditions as regards security. 
+
+// The fact that you are presently reading this means that you have had
+// knowledge of the CeCILL-B license and that you accept its terms.
 
 #ifndef ZIGBEE_MODE_ED
 #error "Zigbee end device mode is not selected in Tools->Zigbee mode"
