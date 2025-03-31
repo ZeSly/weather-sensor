@@ -56,5 +56,7 @@ uint8_t getBatteryCapacity()
             return capacity;
         }
     }
+    Serial.println();
+    
     return 0;
 }
