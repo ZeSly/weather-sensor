@@ -154,14 +154,17 @@ void setup()
   esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
 
   SensorsValues sensorsValues;
-  sensorsValues.temperature = std::roundf(bme.readTemperature() * 10.0) / 10.0;
-  sensorsValues.humidity = std::roundf(bme.readHumidity() * 10.0) / 10.0;
-  sensorsValues.pressure = std::roundf(bme.readPressure() / 10.0) / 10.0;
+  float temperature = bme.readTemperature();
+  float humidity = bme.readHumidity();
+  float pressure = bme.readPressure();
+  sensorsValues.temperature = temperature < -274.0 ? LatestSensorsValues.temperature : std::roundf(temperature * 10.0) / 10.0;
+  sensorsValues.humidity = humidity > 100.0 ? LatestSensorsValues.humidity : std::roundf(bme.readHumidity() * 10.0) / 10.0;
+  sensorsValues.pressure = pressure < 500.0 ? LatestSensorsValues.pressure : std::roundf(bme.readPressure() / 10.0) / 10.0;
   sensorsValues.battery = getBatteryCapacity();
   Serial.printf("Sensors: %.2f°C %.2f%% %.2fhPa batt:%u%%\r\n",
-                sensorsValues.temperature,
-                sensorsValues.humidity,
-                sensorsValues.pressure,
+                temperature,
+                humidity,
+                pressure,
                 sensorsValues.battery);
 
   if (sensorsValues.temperature != LatestSensorsValues.temperature ||
@@ -223,7 +226,7 @@ void setup()
     {
       Serial.println("Zigbee started successfully!");
     }
-    Serial.println("Connecting to network");
+    Serial.print("Connecting to network");
     while (!Zigbee.connected())
     {
       Serial.print(".");
